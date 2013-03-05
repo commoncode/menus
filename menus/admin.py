@@ -5,10 +5,12 @@ from django.db import models
 
 try:
     # Only import from platforms if it is a dependancy
-    from platforms.admin import PlatformObjectInline
-    from platforms import settings as platforms_settings
+    from platforms import admin as platforms_admin
+    # Use platform mixin if platforms is found as a dependancy
+    PlatformInlineMixin = platforms_admin.PlatformInlineMixin
 except ImportError:
-    pass
+    PlatformInlineMixin = object
+   
 
 class LinkAdmin(admin.ModelAdmin):
 
@@ -63,29 +65,10 @@ class MenuItemInline(admin.TabularInline):
     }
 
 
-class MenuAdmin(admin.ModelAdmin):
+class MenuAdmin(PlatformInlineMixin, admin.ModelAdmin):
     list_display = ('name', 'enabled',)
     list_filter = ('enabled',)
 
-    inlines = (
-        MenuItemInline,
-    )
+    inlines = [MenuItemInline,]
 
 admin.site.register(menu_models.Menu, MenuAdmin)
-
-
-class MenuInstanceAdmin(admin.ModelAdmin):
-    list_display = ('menu', 'slug')
-
-    def __init__(self, model, admin_site):
-        # Check to see if platforms is installed, and if it is,
-        # whether or not to use it in the admin
-        try:
-            if platforms_settings.USE_PLATFORMS:
-                self.__class__.inlines = [PlatformObjectInline,]
-        except NameError:
-            pass 
-        super(MenuInstanceAdmin, self).__init__(model, admin_site)
-
-
-admin.site.register(menu_models.MenuInstance, MenuInstanceAdmin)

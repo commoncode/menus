@@ -1,6 +1,13 @@
 from django.db import models
 from entropy import base as entropy_base
-from platforms.models import PlatformObjectManager
+
+try:
+    # Only import from platforms if it is a dependancy
+    from platforms import models as platforms_models
+    # Use platform mixin if platforms is found as a dependancy
+    PlatformObjectManagerMixin = platforms_models.PlatformObjectManagerMixin
+except ImportError:
+    PlatformObjectManagerMixin = object
 
 class Link(entropy_base.LinkURLMixin):
     '''
@@ -16,7 +23,10 @@ class Link(entropy_base.LinkURLMixin):
     slug = models.SlugField(unique=True)
 
     def __unicode__(self):
-        return u'%s (%s)' % (self.title, self.url,)
+        if self.url:
+            return u'%s (%s)' % (self.title, self.url,)
+        else:
+            return u'%s' % self.title
 
     @staticmethod
     def autocomplete_search_fields():
@@ -53,31 +63,13 @@ class Link(entropy_base.LinkURLMixin):
         return '/%s/%s' % (prefix, self.url)
 
 
-class Menu(entropy_base.EnabledMixin):
+class Menu(entropy_base.EnabledMixin, PlatformObjectManagerMixin):
     '''An ordered collection of Links'''
     name = models.CharField(max_length=255)
-    # enabled = base.EnabledField(default=True)
+    slug = models.SlugField(help_text='Name for this menu in templates')
 
     def __unicode__(self):
         return self.name
-        
-
-class MenuInstance(models.Model):
-    """
-    Instantiate a Menu for a given Platform in a Template Position.
-    """
-    # platform = models.ForeignKey('platforms.Platform', null=True, blank=True,
-    #     related_name='menus',
-    #     help_text='Leave blank to set as default for this slug.',
-    # )
-
-    menu = models.ForeignKey('Menu')
-    slug = models.SlugField(help_text='Name for this menu in templates')
-
-    objects = PlatformObjectManager()
-
-    def __unicode__(self):
-        return u'%s' % (self.menu)
 
 
 class MenuItem(models.Model):
@@ -89,6 +81,7 @@ class MenuItem(models.Model):
         ordering = ('order',)
 
     def __unicode__(self):
+
         return u'%s :: %s' % (
             self.menu,
             self.link)
