@@ -5,9 +5,9 @@ try:
     # Only import from platforms if it is a dependancy
     from platforms import models as platforms_models
     # Use platform mixin if platforms is found as a dependancy
-    PlatformObjectManagerMixin = platforms_models.PlatformObjectManagerMixin
+    ObjectManager = platforms_models.PlatformObjectManager
 except ImportError:
-    PlatformObjectManagerMixin = object
+    ObjectManager = models.Manager
 
 class Link(entropy_base.LinkURLMixin):
     '''
@@ -63,13 +63,21 @@ class Link(entropy_base.LinkURLMixin):
         return '/%s/%s' % (prefix, self.url)
 
 
-class Menu(entropy_base.EnabledMixin, PlatformObjectManagerMixin):
+class Menu(entropy_base.EnabledMixin):
     '''An ordered collection of Links'''
     name = models.CharField(max_length=255)
     slug = models.SlugField(help_text='Name for this menu in templates')
+    objects = ObjectManager()
+
+    def __init__(self, *args, **kwargs):
+        # Init all the mixins in order
+        for base in Menu.__bases__:
+            base.__init__(self, *args, **kwargs)
 
     def __unicode__(self):
         return self.name
+
+# Menu.objects = 
 
 
 class MenuItem(models.Model):
