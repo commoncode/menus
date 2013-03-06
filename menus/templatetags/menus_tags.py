@@ -8,7 +8,7 @@ def render_menu(context, slug, *args, **kwargs):
     request = context['view'].request
 
     try:
-        if getattr(Menu.objects, "platform"):
+        if getattr(Menu.objects, "platform", False):
             query = Menu.objects.platform(request.platform).get(slug=slug)
         else:
             query = Menu.objects.get(slug=slug)
