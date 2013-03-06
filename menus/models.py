@@ -20,9 +20,6 @@ class Link(entropy_base.LinkURLMixin):
 
     # url
     # gfk
-    absolute = models.BooleanField('Find for Store', default=False,
-        help_text='Set to indicate we should try to find a store-relative URL for Objects',
-    )
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
 

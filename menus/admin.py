@@ -21,23 +21,21 @@ class LinkAdmin(admin.ModelAdmin):
     list_display = (
         'title',
         'slug',
-        'absolute',
         'url',)
 
     list_edit = (
         'title',
         'slug',
-        'absolute',
         'url',)
 
-    list_filter = ('absolute',)
+    list_filter = ('content_type',)
 
     fieldsets = (
         (None, {
             'fields': ('title', 'slug',),
         }),
         ('Object', {
-            'fields': ('content_type', 'object_id', 'absolute',),
+            'fields': ('content_type', 'object_id',),
         }),
         ('Raw URL', {
             'fields': ('url',),
