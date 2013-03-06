@@ -28,16 +28,21 @@ class Link(entropy_base.LinkURLMixin):
         else:
             return u'%s' % self.title
 
+    # def content_type_model(self):
+        # return self.content_type.model_class()
+
     @staticmethod
     def autocomplete_search_fields():
         return ('title__icontains', 'slug__icontains',)
 
-    def get_url(self, prefix): # TODO: Is this prefix used?
+    def get_url(self):
 
-        # Is a content type specified?
+        # If a URL is specified, use that first
+        if self.url:
+            return self.url
+
         if self.content_type:
 
-            # Is there a specific object to look at?
             if self.object_id:
                 try:
                     obj = self.content_object
@@ -45,22 +50,13 @@ class Link(entropy_base.LinkURLMixin):
                     return '' # raise a validation error
 
                 return obj.get_absolute_url()
-
             else:
                 try:
-                    raise NotImplementedError()
-                    # return self.content_type.model_class().get_store_list_url(prefix)
+                    return self.content_type.model_class().get_list_url()
                 except AttributeError:
                     return '' # raise a validation error
 
         return '' # raise a validation error
-
-        # Fall back to url
-        # if self.url.startswith('http://') or \
-        #     self.url.startswith('https://') or \
-        #     self.url.startswith('/'):
-        #     return self.url
-        # return '/%s/%s' % (prefix, self.url)
 
 
 class Menu(entropy_base.EnabledMixin):
