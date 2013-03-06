@@ -32,7 +32,7 @@ class Link(entropy_base.LinkURLMixin):
     def autocomplete_search_fields():
         return ('title__icontains', 'slug__icontains',)
 
-    def get_url(self, prefix):
+    def get_url(self, prefix): # TODO: Is this prefix used?
 
         # Is a content type specified?
         if self.content_type:
@@ -44,23 +44,23 @@ class Link(entropy_base.LinkURLMixin):
                 except AttributeError:
                     return '' # raise a validation error
 
-                # should we try to find a StoreFOO?
-                if self.absolute and hasattr(obj, 'get_store_url'):
-                    return obj.get_store_url(prefix)
                 return obj.get_absolute_url()
 
             else:
                 try:
-                    return self.content_type.model_class().get_store_list_url(prefix)
+                    raise NotImplementedError()
+                    # return self.content_type.model_class().get_store_list_url(prefix)
                 except AttributeError:
                     return '' # raise a validation error
 
+        return '' # raise a validation error
+
         # Fall back to url
-        if self.url.startswith('http://') or \
-            self.url.startswith('https://') or \
-            self.url.startswith('/'):
-            return self.url
-        return '/%s/%s' % (prefix, self.url)
+        # if self.url.startswith('http://') or \
+        #     self.url.startswith('https://') or \
+        #     self.url.startswith('/'):
+        #     return self.url
+        # return '/%s/%s' % (prefix, self.url)
 
 
 class Menu(entropy_base.EnabledMixin):
@@ -76,8 +76,6 @@ class Menu(entropy_base.EnabledMixin):
 
     def __unicode__(self):
         return self.name
-
-# Menu.objects = 
 
 
 class MenuItem(models.Model):
