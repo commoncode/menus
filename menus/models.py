@@ -27,10 +27,7 @@ class Link(entropy_base.LinkURLMixin):
             return u'%s (%s)' % (self.title, self.url,)
         else:
             return u'%s' % self.title
-
-    # def content_type_model(self):
-        # return self.content_type.model_class()
-
+ 
     @staticmethod
     def autocomplete_search_fields():
         return ('title__icontains', 'slug__icontains',)
@@ -64,11 +61,6 @@ class Menu(entropy_base.EnabledMixin):
     name = models.CharField(max_length=255)
     slug = models.SlugField(help_text='Name for this menu in templates')
     objects = ObjectManager()
-
-    def __init__(self, *args, **kwargs):
-        # Init all the mixins in order
-        for base in Menu.__bases__:
-            base.__init__(self, *args, **kwargs)
 
     def __unicode__(self):
         return self.name
