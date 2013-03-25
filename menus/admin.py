@@ -71,6 +71,10 @@ class MenuAdmin(admin.ModelAdmin):
     list_display = ('name', 'enabled',)
     list_filter = ('enabled',)
 
+    prepopulated_fields = {
+        "slug": ("name",)
+    }
+
     inlines = [
         MenuItemInline
     ] + PlatformObjectInline
