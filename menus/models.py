@@ -47,6 +47,9 @@ class Link(entropy_base.LinkURLMixin):
                 except AttributeError:
                     return '' # raise a validation error
 
+                if obj is None:
+                    return ''
+
                 return obj.get_absolute_url()
             else:
                 try:
