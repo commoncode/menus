@@ -1,4 +1,6 @@
 from django.db import models
+
+from cqrs.models import CQRSModel
 from entropy import base as entropy_base
 
 try:
@@ -13,7 +15,8 @@ try:
 except ImportError:
     ObjectManager = models.Manager
 
-class Link(entropy_base.LinkURLMixin):
+
+class Link(CQRSModel, entropy_base.LinkURLMixin):
     '''
     Admin defined link for use in menus and about the site.
     '''
@@ -28,7 +31,7 @@ class Link(entropy_base.LinkURLMixin):
             return u'%s (%s)' % (self.title, self.url,)
         else:
             return u'%s' % self.title
- 
+
     @staticmethod
     def autocomplete_search_fields():
         return ('title__icontains', 'slug__icontains',)
@@ -60,7 +63,7 @@ class Link(entropy_base.LinkURLMixin):
         return '' # raise a validation error
 
 
-class Menu(entropy_base.EnabledMixin):
+class Menu(CQRSModel, entropy_base.EnabledMixin):
     '''An ordered collection of Links'''
     name = models.CharField(max_length=255)
     slug = models.SlugField(help_text='Name for this menu in templates')
@@ -70,7 +73,7 @@ class Menu(entropy_base.EnabledMixin):
         return self.name
 
 
-class MenuItem(models.Model):
+class MenuItem(CQRSModel):
     menu = models.ForeignKey('Menu', related_name='items')
     link = models.ForeignKey('Link')
     order = models.PositiveIntegerField(default=0)
