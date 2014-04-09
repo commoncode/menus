@@ -1,0 +1,16 @@
+Metadata-Version: 1.1
+Name: menus
+Version: 0.0.2
+Summary: Create menus & links to anything in Django
+Home-page: https://github.com/commoncode/menus
+Author: Daryl Antony
+Author-email: daryl@commoncode.com.au
+License: UNKNOWN
+Description: UNKNOWN
+Keywords: django
+Platform: UNKNOWN
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
