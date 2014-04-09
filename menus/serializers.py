@@ -1,40 +1,19 @@
+from rest_framework import serializers
+
 from cqrs.serializers import CQRSSerializer
-from entropy.base import BaseLinkMixin, EnabledMixin, LinkURLMixin
 
 from .models import Link, Menu, MenuItem
 
 
-class BaseLinkMixinSerializer(CQRSSerializer):
-    class Meta:
-        model = BaseLinkMixin
-        fields = (
-            'id',
-        )
-
-
-class LinkURLMixinSerializer(CQRSSerializer):
-    class Meta:
-        model = LinkURLMixin
-        fields = (
-            'id',
-        )
-
-
-class EnabledMixinSerializer(CQRSSerializer):
-    class Meta:
-        model = EnabledMixin
-        fields = (
-            'id',
-        )
-
-
 class LinkSerializer(CQRSSerializer):
+    category = serializers.IntegerField(source='object_id', read_only=True)
+
     class Meta:
         model = Link
         fields = (
             'id',
+            'category',
             'title',
-            'url',
             'slug'
         )
 
@@ -45,8 +24,6 @@ class MenuItemSerializer(CQRSSerializer):
     class Meta:
         model = MenuItem
         fields = (
-            'id',
-            'menu',
             'order',
             'link'
         )
@@ -58,7 +35,6 @@ class MenuSerializer(CQRSSerializer):
     class Meta:
         model = Menu
         fields = (
-            'id',
             'name',
             'items',
             'slug'
