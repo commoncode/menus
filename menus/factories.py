@@ -18,6 +18,8 @@ class LinkFactory(factory.django.DjangoModelFactory):
         lambda o: lorem_ipsum.words(2, common=False).title())
     slug = factory.LazyAttribute(
         lambda o: slugify(lorem_ipsum.words(3, common=False)))
+    content_type = ContentType.objects.get(app_label='products',
+        model='category')
 
 
 class MenuFactory(factory.django.DjangoModelFactory):

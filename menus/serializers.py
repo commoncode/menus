@@ -1,13 +1,18 @@
+from rest_framework import serializers
+
 from cqrs.serializers import CQRSSerializer
 
 from .models import Link, Menu, MenuItem
 
 
 class LinkSerializer(CQRSSerializer):
+    category = serializers.IntegerField(source='object_id', read_only=True)
+
     class Meta:
         model = Link
         fields = (
             'id',
+            'category',
             'title',
             'slug'
         )
