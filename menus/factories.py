@@ -6,7 +6,6 @@ from django.template.defaultfilters import slugify
 
 from faker import Factory
 
-from commercia.products.factories import CategoryFactory
 
 
 fake = Factory.create()
@@ -16,21 +15,18 @@ class LinkFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = 'menus.Link'
 
     title = factory.LazyAttribute(
-        lambda o: lorem_ipsum.words(3, common=False).title())
-    url = factory.LazyAttribute(
-        lambda o: slugify(lorem_ipsum.words(5, common=False)))
+        lambda o: lorem_ipsum.words(2, common=False).title())
     slug = factory.LazyAttribute(
-        lambda o: slugify(lorem_ipsum.words(5, common=False)))
-    content_object = factory.SubFactory(CategoryFactory)
+        lambda o: slugify(lorem_ipsum.words(3, common=False)))
 
 
 class MenuFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = 'menus.Menu'
 
     name = factory.LazyAttribute(
-        lambda o: lorem_ipsum.words(3, common=False).title())
+        lambda o: lorem_ipsum.words(2, common=False).title())
     slug = factory.LazyAttribute(
-        lambda o: lorem_ipsum.words(1, common=False).title())
+        lambda o: slugify(lorem_ipsum.words(3, common=False).title()))
 
 
 class MenuItemFactory(factory.django.DjangoModelFactory):
