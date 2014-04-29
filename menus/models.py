@@ -69,6 +69,8 @@ class Menu(CQRSModel):
     slug = models.SlugField(help_text='Name for this menu in templates')
     enabled = models.BooleanField(default=True)
     objects = ObjectManager()
+    parent = models.ForeignKey('self', blank=True, null=True,
+        related_name='submenus')
 
     def __unicode__(self):
         return self.name

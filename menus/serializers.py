@@ -37,5 +37,6 @@ class MenuSerializer(CQRSSerializer):
         fields = (
             'name',
             'items',
+            'parent',
             'slug'
         )
