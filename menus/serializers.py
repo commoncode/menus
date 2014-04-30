@@ -6,13 +6,13 @@ from .models import Link, Menu, MenuItem
 
 
 class LinkSerializer(CQRSSerializer):
-    category = serializers.IntegerField(source='object_id', read_only=True)
+    object_id = serializers.IntegerField(source='object_id', read_only=True)
 
     class Meta:
         model = Link
         fields = (
             'id',
-            'category',
+            'object_id',
             'title',
             'slug'
         )
