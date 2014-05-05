@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from cqrs.serializers import CQRSSerializer
+from commercia.products.serializers import CollectionSerializer
 
 from .models import Link, Menu, MenuItem
 
@@ -31,11 +32,13 @@ class MenuItemSerializer(CQRSSerializer):
 
 class MenuSerializer(CQRSSerializer):
     items = MenuItemSerializer(many=True)
+    collection = CollectionSerializer()
 
     class Meta:
         model = Menu
         fields = (
             'title',
+            'collection',
             'items',
             'parent',
             'slug'
