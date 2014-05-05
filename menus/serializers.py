@@ -35,7 +35,7 @@ class MenuSerializer(CQRSSerializer):
     class Meta:
         model = Menu
         fields = (
-            'name',
+            'title',
             'items',
             'parent',
             'slug'

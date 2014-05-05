@@ -12,18 +12,18 @@ class Command(BaseCommand):
     help = 'Create the navigation'
 
     def handle(self, *args, **options):
-        navigation = MenuFactory(name='Navigation')
+        navigation = MenuFactory(title='Navigation')
         categories = Category.objects.all().values_list('pk', flat=True)
 
         for i in range(randint(2, 4)):
             menu = MenuFactory(parent=navigation)
 
-            print "Menu: {}".format(menu.name)
+            print "Menu: {}".format(menu.title)
 
             for j in range(randint(1, 3)):
                 submenu = MenuFactory(parent=menu)
 
-                print "SubMenu: {}".format(submenu.name)
+                print "SubMenu: {}".format(submenu.title)
 
                 for k in range(randint(2, 5)):
                     c_type = ContentType.objects.get(app_label='products',

@@ -14,7 +14,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print "Creating Footer"
 
-        footer = MenuFactory(name='Footer')
+        footer = MenuFactory(title='Footer')
         titles = ('Newsletter', 'About Us', 'Contact Us', 'Referral Program',
             'Store Locator', 'Help & FAQ\'s', 'Press', 'Sitemap',
             'Terms & Privacy', 'Blog')

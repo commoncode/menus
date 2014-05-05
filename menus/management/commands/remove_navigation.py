@@ -7,7 +7,7 @@ class Command(BaseCommand):
     help = 'Clean up Footer'
 
     def handle(self, *args, **options):
-        navigation = Menu.objects.get(name='Navigation')
+        navigation = Menu.objects.get(title='Navigation')
 
         for item in navigation.items.all():
             item.link.delete()

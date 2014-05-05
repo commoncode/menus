@@ -19,9 +19,9 @@ class LinkFactory(factory.django.DjangoModelFactory):
 
 class MenuFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = 'menus.Menu'
-    FACTORY_DJANGO_GET_OR_CREATE = ('name', )
+    FACTORY_DJANGO_GET_OR_CREATE = ('title', )
 
-    name = factory.LazyAttribute(lambda o: words(2).title())
+    title = factory.LazyAttribute(lambda o: words(2).title())
     slug = factory.LazyAttribute(lambda o: slugify(words(3)))
 
 
