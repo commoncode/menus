@@ -66,8 +66,6 @@ class Link(CQRSModel, LinkURLMixin):
 class Menu(CQRSModel, TitleMixin, EnabledMixin, SlugMixin):
     '''An ordered collection of Links'''
     objects = ObjectManager()
-    parent = models.ForeignKey('self', blank=True, null=True,
-        related_name='submenus')
 
     def __unicode__(self):
         return self.title
@@ -77,9 +75,10 @@ class MenuItem(CQRSModel):
     menu = models.ForeignKey('Menu', related_name='items')
     link = models.ForeignKey('Link')
     order = models.PositiveIntegerField(default=0)
+    parent = models.ForeignKey('MenuItem', null=True, related_name='children')
 
     class Meta:
-        ordering = ('order',)
+        ordering = ('order', )
 
     def __unicode__(self):
 
