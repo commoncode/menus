@@ -75,7 +75,7 @@ class MenuItem(CQRSModel):
     menu = models.ForeignKey('Menu', related_name='items')
     link = models.ForeignKey('Link')
     order = models.PositiveIntegerField(default=0)
-    parent = models.ForeignKey('MenuItem', null=True, related_name='children')
+    parent = models.ForeignKey('self', null=True, related_name='children')
 
     class Meta:
         ordering = ('order', )

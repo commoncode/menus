@@ -25,6 +25,7 @@ class MenuItemSerializer(CQRSSerializer):
         model = MenuItem
         fields = (
             'order',
+            'parent',
             'link'
         )
 
@@ -36,8 +37,6 @@ class MenuSerializer(CQRSSerializer):
         model = Menu
         fields = (
             'title',
-            'collection',
             'items',
-            'parent',
             'slug'
         )

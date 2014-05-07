@@ -1,6 +1,7 @@
 from random import choice
 
 from django.contrib.contenttypes.models import ContentType
+from django.core.management import call_command
 from django.core.management.base import BaseCommand, CommandError
 
 from pages.models import Page
@@ -18,7 +19,12 @@ class Command(BaseCommand):
         titles = ('Newsletter', 'About Us', 'Contact Us', 'Referral Program',
             'Store Locator', 'Help & FAQ\'s', 'Press', 'Sitemap',
             'Terms & Privacy', 'Blog')
-        pages = Page.objects.all().values_list('pk', flat=True)
+        pages = Page.objects.all()
+
+        if not pages.exists():
+            call_command('create_pages')
+
+        pages = pages.values_list('pk', flat=True)
 
         for title in titles:
             c_type = ContentType.objects.get(app_label='pages', model='page')

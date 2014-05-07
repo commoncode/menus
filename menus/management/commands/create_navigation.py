@@ -1,9 +1,10 @@
 from random import choice, randint
 
 from django.contrib.contenttypes.models import ContentType
+from django.core.management import call_command
 from django.core.management.base import BaseCommand, CommandError
 
-from commercia.products.models import Category, Collection
+from commercia.products.models import Category
 
 from ...factories import LinkFactory, MenuFactory, MenuItemFactory
 
@@ -12,39 +13,37 @@ class Command(BaseCommand):
     help = 'Create the navigation'
 
     def handle(self, *args, **options):
-        navigation = MenuFactory(title='Navigation')
-        collections = list(Collection.objects.all())
+        menu = MenuFactory(title='Navigation')
         c_type = ContentType.objects.get(app_label='products',
             model='category')
+        categories = Category.objects.filter(parent__isnull=True)
 
-        for i in range(randint(2, 4)):
-            if not collections:
-                break
+        if not categories.exists():
+            call_command('create_categories')
 
-            menu = MenuFactory(parent=navigation)
+        categories = list(categories)
 
-            print "Menu: {}".format(menu.title)
+        while categories:
+            item = MenuItemFactory(menu=menu)
+            print "MenuItem: {}".format(item)
 
             for j in range(randint(2, 4)):
-                if not collections:
+                if not categories:
                     break
 
-                collection = collections.pop()
-                submenu = MenuFactory(parent=menu, title=collection.title)
-                collection.menu = submenu
-                collection.save()
+                category = categories.pop()
+                link = LinkFactory(content_type=c_type, object_id=category.pk,
+                    title=category.title)
+                subitem = MenuItemFactory(menu=menu, parent=item, link=link)
 
-                print "SubMenu: {}".format(submenu.title)
+                print ">> {}".format(subitem)
 
-                for category in collection.categories.all():
-                    link = LinkFactory(content_type=c_type,
-                        object_id=category.pk)
-                    menuitem = MenuItemFactory(menu=submenu, link=link)
+                for subcategory in category.children.all():
+                    sublink = LinkFactory(content_type=c_type,
+                        object_id=subcategory.pk, title=subcategory.title)
+                    subsubitem = MenuItemFactory(menu=menu, link=sublink,
+                        parent=subitem)
 
-                    print "MenuItem: {}".format(menuitem.link.title)
+                    print ">>>> {}".format(subsubitem)
 
-                submenu.save()
-
-            menu.save()
-
-        navigation.save()
+        menu.save()
