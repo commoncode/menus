@@ -63,7 +63,6 @@ class Link(CQRSModel, LinkURLMixin):
         return '' # raise a validation error
 
 
-<<<<<<< HEAD
 class MenuInstance(CQRSModel):
     '''
     An instantiation of a Menu on a given Platform and Position
@@ -77,12 +76,10 @@ class MenuInstance(CQRSModel):
 
 
 class Menu(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
-    '''An ordered collection of Links'''
+    '''
+    An ordered collection of Links
+    '''
 
-=======
-class Menu(CQRSModel, TitleMixin, EnabledMixin, SlugMixin):
-    '''An ordered collection of Links'''
->>>>>>> 042555dcd6c8bba6c91485d90a0e70c977494fa7
     objects = ObjectManager()
 
     def __unicode__(self):
