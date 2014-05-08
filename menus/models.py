@@ -1,7 +1,7 @@
 from django.db import models
 
 from cqrs.models import CQRSModel
-from entropy import base as entropy_base
+from entropy.base import LinkURLMixin, TitleMixin, EnabledMixin, SlugMixin
 
 try:
     # Only import from platforms if it is a dependancy
@@ -16,7 +16,7 @@ except ImportError:
     ObjectManager = models.Manager
 
 
-class Link(CQRSModel, entropy_base.LinkURLMixin):
+class Link(CQRSModel, LinkURLMixin):
     '''
     Admin defined link for use in menus and about the site.
     '''
@@ -34,7 +34,7 @@ class Link(CQRSModel, entropy_base.LinkURLMixin):
 
     @staticmethod
     def autocomplete_search_fields():
-        return ('title__icontains', 'slug__icontains',)
+        return ('title__icontains', 'slug__icontains', )
 
     def get_url(self):
 
@@ -63,6 +63,7 @@ class Link(CQRSModel, entropy_base.LinkURLMixin):
         return '' # raise a validation error
 
 
+<<<<<<< HEAD
 class MenuInstance(CQRSModel):
     '''
     An instantiation of a Menu on a given Platform and Position
@@ -78,19 +79,24 @@ class MenuInstance(CQRSModel):
 class Menu(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
     '''An ordered collection of Links'''
 
+=======
+class Menu(CQRSModel, TitleMixin, EnabledMixin, SlugMixin):
+    '''An ordered collection of Links'''
+>>>>>>> 042555dcd6c8bba6c91485d90a0e70c977494fa7
     objects = ObjectManager()
 
     def __unicode__(self):
-        return self.name
+        return self.title
 
 
 class MenuItem(CQRSModel):
     menu = models.ForeignKey('Menu', related_name='items')
     link = models.ForeignKey('Link')
     order = models.PositiveIntegerField(default=0)
+    parent = models.ForeignKey('self', null=True, related_name='children')
 
     class Meta:
-        ordering = ('order',)
+        ordering = ('order', )
 
     def __unicode__(self):
 
