@@ -63,11 +63,21 @@ class Link(CQRSModel, entropy_base.LinkURLMixin):
         return '' # raise a validation error
 
 
-class Menu(CQRSModel):
+class MenuInstance(CQRSModel):
+    '''
+    An instantiation of a Menu on a given Platform and Position
+
+    Menu's display in their given Position across all Links.
+    '''
+    platforms = models.ManyToManyField(
+        'platforms.Platform')
+    position = models.ForeignKey(
+        'positions.Position')
+
+
+class Menu(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
     '''An ordered collection of Links'''
-    name = models.CharField(max_length=255)
-    slug = models.SlugField(help_text='Name for this menu in templates')
-    enabled = models.BooleanField(default=True)
+
     objects = ObjectManager()
 
     def __unicode__(self):
