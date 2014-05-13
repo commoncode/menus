@@ -62,6 +62,12 @@ class Link(CQRSModel, LinkURLMixin):
 
         return '' # raise a validation error
 
+    def get_content_type(self):
+        if self.content_type:
+            return self.content_type.model
+
+        return None
+
 
 class MenuInstance(CQRSModel):
     '''
