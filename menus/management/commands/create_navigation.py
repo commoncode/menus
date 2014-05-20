@@ -33,14 +33,15 @@ class Command(BaseCommand):
 
                 category = categories.pop()
                 link = LinkFactory(content_type=c_type, object_id=category.pk,
-                    title=category.title)
+                    title=category.title, slug=category.slug)
                 subitem = MenuItemFactory(menu=menu, parent=item, link=link)
 
                 print ">> {}".format(subitem)
 
                 for subcategory in category.children.all():
                     sublink = LinkFactory(content_type=c_type,
-                        object_id=subcategory.pk, title=subcategory.title)
+                        object_id=subcategory.pk, title=subcategory.title,
+                        slug=subcategory.slug)
                     subsubitem = MenuItemFactory(menu=menu, link=sublink,
                         parent=subitem)
 
