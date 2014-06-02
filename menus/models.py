@@ -3,18 +3,6 @@ from django.db import models
 from cqrs.models import CQRSModel
 from entropy.base import LinkURLMixin, TitleMixin, EnabledMixin, SlugMixin
 
-try:
-    # Only import from platforms if it is a dependancy
-    from platforms import settings as platforms_settings
-    if platforms_settings.USE_PLATFORMS:
-        from platforms import models as platforms_models
-        # Use platform mixin if platforms is found as a dependancy
-        ObjectManager = platforms_models.PlatformObjectManager
-    else:
-        raise ImportError
-except ImportError:
-    ObjectManager = models.Manager
-
 
 class Link(CQRSModel, LinkURLMixin):
     '''
@@ -85,11 +73,11 @@ class Menu(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
     '''
     An ordered collection of Links
     '''
-
-    objects = ObjectManager()
-
-    def __unicode__(self):
-        return self.title
+    # title
+    # short_title
+    # slug
+    # enabled
+    pass
 
 
 class MenuItem(CQRSModel):
@@ -102,7 +90,6 @@ class MenuItem(CQRSModel):
         ordering = ('order', )
 
     def __unicode__(self):
-
         return u'%s :: %s' % (
             self.menu,
             self.link)
