@@ -12,13 +12,7 @@ class LinkSerializer(CQRSSerializer):
 
     class Meta:
         model = Link
-        fields = (
-            'id',
-            'content_type',
-            'object_id',
-            'title',
-            'slug'
-        )
+        exclude = 'url',  # From LinkURLMixin
 
 
 class MenuItemSerializer(CQRSSerializer):
@@ -26,11 +20,7 @@ class MenuItemSerializer(CQRSSerializer):
 
     class Meta:
         model = MenuItem
-        fields = (
-            'order',
-            'parent',
-            'link'
-        )
+        exclude = 'menu',
 
 
 class MenuSerializer(CQRSSerializer):
