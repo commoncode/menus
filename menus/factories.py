@@ -28,6 +28,7 @@ class MenuFactory(factory.django.DjangoModelFactory):
 
 class MenuItemFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = 'menus.MenuItem'
+    FACTORY_DJANGO_GET_OR_CREATE = ('menu', 'link')
 
     menu = factory.SubFactory(MenuFactory)
     link = factory.SubFactory(LinkFactory)
