@@ -14,16 +14,16 @@ class LinkFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = 'menus.Link'
     FACTORY_DJANGO_GET_OR_CREATE = ('title', )
 
-    title = factory.LazyAttribute(lambda o: words(2).title())
-    slug = factory.LazyAttribute(lambda o: slugify(words(3)))
+    title = factory.LazyAttribute(lambda o: words(3).title())
+    slug = factory.LazyAttribute(lambda o: slugify(o.title))
 
 
 class MenuFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = 'menus.Menu'
     FACTORY_DJANGO_GET_OR_CREATE = ('title', )
 
-    title = factory.LazyAttribute(lambda o: words(2).title())
-    slug = factory.LazyAttribute(lambda o: slugify(words(3)))
+    title = factory.LazyAttribute(lambda o: words(3).title())
+    slug = factory.LazyAttribute(lambda o: slugify(o.title))
 
 
 class MenuItemFactory(factory.django.DjangoModelFactory):
