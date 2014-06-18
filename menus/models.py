@@ -12,11 +12,10 @@ class Link(CQRSModel, LinkURLMixin):
     # url
     # gfk
     title = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True)
 
     def __unicode__(self):
         if self.url:
-            return u'%s (%s)' % (self.title, self.url,)
+            return u'%s (%s)' % (self.title, self.url)
         else:
             return u'%s' % self.title
 
@@ -47,6 +46,22 @@ class Link(CQRSModel, LinkURLMixin):
                     return self.content_type.model_class().get_list_url()
                 except AttributeError:
                     return '' # raise a validation error
+
+        return '' # raise a validation error
+
+    def href(self):
+        '''
+        Since we can not use get_absolute_url() method we will only return
+        the object slug, and let the client handle that as required.
+        '''
+
+        if self.url:
+            return self.url
+
+        try:
+            return self.content_object.slug
+        except AttributeError:
+            return ''
 
         return '' # raise a validation error
 
