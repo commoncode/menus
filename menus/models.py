@@ -99,6 +99,7 @@ class MenuItem(CQRSModel):
     menu = models.ForeignKey('Menu', related_name='items')
     link = models.ForeignKey('Link')
     order = models.PositiveIntegerField(default=0)
+    is_featured = models.BooleanField(default=False)
     parent = models.ForeignKey('self', null=True, related_name='children')
 
     class Meta:
