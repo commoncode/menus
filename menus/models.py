@@ -11,18 +11,14 @@ class Link(CQRSModel, LinkURLMixin):
 
     # url
     # gfk
+
     title = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True)
 
     def __unicode__(self):
         if self.url:
             return u'%s (%s)' % (self.title, self.url,)
         else:
             return u'%s' % self.title
-
-    @staticmethod
-    def autocomplete_search_fields():
-        return ('title__icontains', 'slug__icontains', )
 
     def get_url(self):
 
@@ -53,7 +49,6 @@ class Link(CQRSModel, LinkURLMixin):
     def get_content_type(self):
         if self.content_type:
             return self.content_type.model
-
         return None
 
 

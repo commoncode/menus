@@ -6,13 +6,17 @@ from .models import Link, Menu, MenuItem
 
 
 class LinkSerializer(CQRSSerializer):
-    content_type = serializers.CharField(source='get_content_type',
+
+    content_type = serializers.CharField(
+        source='get_content_type',
         read_only=True)
-    object_id = serializers.IntegerField(source='object_id', read_only=True)
+
+    object_id = serializers.IntegerField(
+        source='object_id',
+        read_only=True)
 
     class Meta:
         model = Link
-        exclude = 'url',  # From LinkURLMixin
 
 
 class MenuItemSerializer(CQRSSerializer):
