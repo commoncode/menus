@@ -2,7 +2,7 @@ from django.db import models
 
 from cqrs.models import CQRSModel
 from entropy.base import LinkURLMixin, TitleMixin, EnabledMixin, SlugMixin
-
+from images.mixins import ImageMixin
 
 class Link(CQRSModel, LinkURLMixin):
     '''
@@ -95,7 +95,7 @@ class Menu(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
     pass
 
 
-class MenuItem(CQRSModel):
+class MenuItem(CQRSModel, ImageMixin):
     menu = models.ForeignKey('Menu', related_name='items')
     link = models.ForeignKey('Link')
     order = models.PositiveIntegerField(default=0)
