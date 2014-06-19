@@ -2,7 +2,7 @@ from django.db import models
 
 from cqrs.models import CQRSModel
 from entropy.base import LinkURLMixin, TitleMixin, EnabledMixin, SlugMixin
-
+from images.mixins import ImageMixin
 
 class Link(CQRSModel, LinkURLMixin):
     '''
@@ -16,12 +16,14 @@ class Link(CQRSModel, LinkURLMixin):
 
     def __unicode__(self):
         if self.url:
-            return u'%s (%s)' % (self.title, self.url,)
+            return u'%s (%s)' % (self.title, self.url)
         else:
             return u'%s' % self.title
 
     def get_url(self):
-
+        '''
+        Return the custom url or get_abs url
+        '''
         # If a URL is specified, use that first
         if self.url:
             return self.url
@@ -75,10 +77,11 @@ class Menu(CQRSModel, EnabledMixin, SlugMixin, TitleMixin):
     pass
 
 
-class MenuItem(CQRSModel):
+class MenuItem(CQRSModel, ImageMixin):
     menu = models.ForeignKey('Menu', related_name='items')
     link = models.ForeignKey('Link')
     order = models.PositiveIntegerField(default=0)
+    is_featured = models.BooleanField(default=False)
     parent = models.ForeignKey('self', null=True, related_name='children')
 
     class Meta:
